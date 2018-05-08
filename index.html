@@ -3,19 +3,20 @@
   <head>
     <meta charset="utf-8">
     <title>BOMB CO</title>
-  <style>
-
-.clicked {
-  background-color:red;
-}
-
-
-  </style>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body onload="startGame()">
-<div id='container'>
-
+<div id="game-container">
+  <aside id="clipboardContainer">
+    <div id="instructionsContainer">
+      <h2>Instructions</h2>
+      <p id="instructions"></p>
+    </div>
+  </aside>
+  <div id='bombContainer'>
   </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="index.js"></script>
   </body>
 </html>

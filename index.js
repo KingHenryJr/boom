@@ -1,39 +1,48 @@
 
 //get elements
+const container = document.getElementById('bombContainer')
+const instructions = document.getElementById('instructions')
+
+//solutions
 const levelOneSolution = [1,3,2]
 const levelTwoSolution = [2,3,1]
 const levelThreeSolution = [4,1,2,2]
 const levelFourSolution = [3,1,2,3]
-const levelFiveSolution = [2,3,1,4]
-const container = document.getElementById('container')
+const levelFiveSolution = [2,4,1,2]
+
+//default settings
 let ansArray = []
 let levelCounter = 0
 let playerWin = false
+let bombExploded = false
+
 //intro
 function startGame(){
-  alert('hi!')
-  startLevelOne(levelOneSolution)
+  levelOne(levelOneSolution)
 }
 
-
 //level 1
-function startLevelOne(solution){
+function levelOne(solution){
   levelLogic(solution)
+  instructions.innerText = "Press the First Button. Then the Third Button. Then the Second."
 }
 
 //level 2
 function levelTwo(solution){
   levelLogic(solution)
+  instructions.innerText = "Press the Second Button. Then the Third Button. Then the First."
 }
 
 //level 3
 function levelThree(solution){
   levelLogic(solution)
+  instructions.innerText = "Press the Fourth Button. Then the First Button. Then the Second. Then the Second."
 }
 
 //level 4
 function levelFour(solution){
   levelLogic(solution)
+  instructions.innerText = "Press the Third Button. Do not press the Fourth Button. Then the Second. Then the Second."
 }
 
 //level 5
@@ -43,7 +52,8 @@ function levelFive(solution){
 
 //progresses levels if playerWin is true and the counter has been incremented
 function levelProgression(){
-  if (playerWin === true && levelCounter === 1){
+
+  if (playerWin === true && levelCounter === 1) {
     levelTwo(levelTwoSolution)
   } else if (playerWin === true && levelCounter === 2) {
     levelThree(levelThreeSolution)
@@ -93,16 +103,43 @@ function handleCombinationAttempt(buttonNumber, solution){ //inputs button numbe
   })
 
   if (matches.includes(false)) { //check if any comparisons are false if so BOOM
-    alert("boom") //CHANGE TO LOSE SCREEN THEN RESTART
+    bombExploded = true
+    animateExplosion();
+    setTimeout(clearExplosion, 2000);
+
+    container.innerHTML = ""
+    levelCounter = 0
     ansArray = [] //clears our parsed number array
+    startGame()
   } else if (matches.length === solution.length) {
     alert("YAYYYY") //CHANGE TO WIN SCREEN!!!!!!
     ansArray = []
     container.innerHTML = "" //empty container of all divs (buttons + event listeners)
     playerWin = true
     levelCounter += 1
+    levelProgression()
   }
+}
 
-  console.log(playerWin)
-  levelProgression()
+// animateExplosion
+function animateExplosion(){
+  let explodeDiv = document.createElement('div'),
+      explodeImg = document.createElement('img');
+
+      explodeDiv.id = "explosion"
+
+      explodeImg.src = "img/explosion.gif"
+      explodeDiv.classList.add('modal');
+      explodeDiv.appendChild(explodeImg);
+      document.body.append(explodeDiv);
+}
+
+// clearExplosions
+function clearExplosion(){
+  let explodeContainer = $('#explosion');
+    if (explodeContainer && bombExploded === true) {
+      explodeContainer.delay(2000).fadeOut(1000, function(){
+        explodeContainer.remove();
+      })
+    }
 }

@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bombs_diffused: 1
+  bombs_exploded: 1
+
+two:
+  bombs_diffused: 1
+  bombs_exploded: 1

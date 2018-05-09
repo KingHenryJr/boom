@@ -15,6 +15,7 @@ const pressLogin = document.getElementById('pressLogin')
 const introButtons = document.getElementById('introButtons')
 const introFormDiv = document.getElementById('introFormDiv')
 
+
 let interval //empty interval
 
 //solutions
@@ -30,22 +31,19 @@ let levelCounter = 0
 let playerWin = false
 let bombExploded = false
 let userId = 0
+let userName = []
+
 //intro page
-function intro(){
-
-  hideGame()//hides game assets
-  pressSignup.addEventListener('click', pressedSignup)
-  pressLogin.addEventListener('click', pressedLogin)
-
-
-  //after successful signup or login
-   //reveal start button when info submitted
-  startButton.addEventListener('click', startGame)
-
+function intro(){ //on page load create login page
+  hideGame() //hides game assets
+  pressSignup.addEventListener('click', pressedSignup) //press sign up button
+  pressLogin.addEventListener('click', pressedLogin) //press log in button
+  startButton.addEventListener('click', startGame) //when revealed starts game
 }
 
 //starts gameplay
 function startGame(){
+  console.log(userId)
   introButtons.classList.add('hidden') //hides intro buttons
   introFormDiv.classList.add('hidden') //hides intro forms
 
@@ -307,13 +305,28 @@ function introForm(){
            <div>
      `
     }
+//check to see if user is in database - if so reveal start button
 function checkUser(json){
+
+  const loginName = document.getElementById('gamertag')
+  let filteredUser = json.filter((item)=> loginName.value == item["name"]) //filtering through json data for the correct user
+  userId += filteredUser[0]["id"] //stashing the user id of the logged in user
+  userName.push(filteredUser[0]["name"])
+  if(userId !== 0 && userName.length > 0){
+    startButton.classList.remove('hidden')
+    loginDiv.classList.add('hidden')
+  }
+
 
 }
 
 //keeping user id
 function addUserId(json){
-  userId += json.id
+  userId = json["id"]
+  userName = json["name"]
+  startButton.classList.remove('hidden')
+  console.log(userName)
+  signInDiv.classList.add('hidden')
 }
 
 // submit stuff
@@ -332,28 +345,17 @@ function addUserId(json){
         headers: {
           "content-type": "application/json"
         }
-      }).then(res => res.json()).then(console.log)
-
+      }).then(res => res.json()).then(addUserId)
     })
-    // if (userId !== 0){
-    //
-    // }
   }
 
 // login stuff
 function onLoginSubmit(){
-  const loginSubmit = document.getElementById('loginsubmit')
+  const loginSubmit = document.querySelector('form')
   const loginName = document.getElementById('gamertag')
   loginSubmit.addEventListener("submit", (e) => {
     e.preventDefault()
-
     fetch('http://localhost:3000/api/v1/users', {
     }).then(res => res.json()).then(checkUser)
-
-
   })
-  if (userId !== 0) {
-    startButton.classList.remove('hidden')
-  }
-
 }

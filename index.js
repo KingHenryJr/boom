@@ -1,6 +1,6 @@
 
 //get elements
-const container = document.getElementById('bombContainer')
+const bombContainer = document.getElementById('bombContainer')
 const instructions = document.getElementById('instructions')
 const timer = document.getElementById('timer')
 const timerDiv = document.getElementById('timerDiv')
@@ -10,6 +10,11 @@ const gameContainer = document.getElementById('game-container')
 const clipboardContainer = document.getElementById('clipboardContainer')
 const signInDiv = document.getElementById('signInDiv')
 const loginDiv = document.getElementById('loginDiv')
+const pressSignUp = document.getElementById('pressSignup')
+const pressLogin = document.getElementById('pressLogin')
+const introButtons = document.getElementById('introButtons')
+const introFormDiv = document.getElementById('introFormDiv')
+
 let interval //empty interval
 
 //solutions
@@ -24,26 +29,30 @@ let ansArray = []
 let levelCounter = 0
 let playerWin = false
 let bombExploded = false
-
-
+let userId = 0
 //intro page
 function intro(){
 
   hideGame()//hides game assets
-  //reveals start button
-  signInDiv.innerHTML = introForm() //shows signup form
-  loginDiv.innerHTML = loginForm() //shows login form
-  onSignUpSubmit()//signup listener
-  onLoginSubmit()//login listener
-  // startButton.classList.remove('hidden') //reveal start button when info submitted
+  pressSignup.addEventListener('click', pressedSignup)
+  pressLogin.addEventListener('click', pressedLogin)
+
+
+  //after successful signup or login
+   //reveal start button when info submitted
   startButton.addEventListener('click', startGame)
 
 }
 
 //starts gameplay
 function startGame(){
-  signInDiv.classList.add('hidden')//hides sign in div
-  loginDiv.classList.add('hidden')
+  introButtons.classList.add('hidden') //hides intro buttons
+  introFormDiv.classList.add('hidden') //hides intro forms
+
+  clipboardContainer.classList.remove('hidden')
+  instructionsContainer.classList.remove('hidden')
+  timerDiv.classList.remove('hidden')
+
   showGame() //unhide all game assets
   startButton.classList.add('hidden') //hides start button
   buttonRestart.classList.add('hidden') //hides restart button
@@ -85,6 +94,8 @@ function levelFour(solution){
 
 //level 5
 function levelFive(solution){
+  timer.innerHTML = 00 + ":" + 35;
+  startTimer();
   levelLogic(solution)
   instructions.innerText = "Press the Second Button. Then the Fourth. Then the First. Then the Third."
 }
@@ -108,8 +119,12 @@ function levelProgression(){
 //logic!!!
 function levelLogic(solution){
   playerWin = false
+  //create bomb
   generateButtons(solution) // execute generate buttons + sets off the chain
 }
+//generate bomb
+
+
 
 //declare generate buttons
 function generateButtons(solution){
@@ -123,9 +138,11 @@ function generateButtons(solution){
       bombButtonDiv.appendChild(newButton); //append buttons to bomb div
   })
 
-  container.appendChild(bombButtonDiv) //appending div with buttons to our empty container
+  bombContainer.appendChild(bombButtonDiv) //appending div with buttons to our empty container
   bombButtonDiv.addEventListener('click', function(event){ //adding event listeners to our buttons div
     if(event.target.tagName === 'BUTTON') {
+
+      //snap wires
       handleCombinationAttempt(event.target.innerText, solution) //passing in button pressed + solution to our combination handler
     }
   })
@@ -152,7 +169,7 @@ function winner(){
   alert("YAYYYY") //CHANGE TO WIN SCREEN!!!!!!
   clearInterval(interval)
   ansArray = []
-  container.innerHTML = "" //empty container of all divs (buttons + event listeners)
+  bombContainer.innerHTML = "" //empty container of all divs (buttons + event listeners)
   playerWin = true
   levelCounter += 1
   levelProgression() // progression logic
@@ -161,21 +178,21 @@ function winner(){
 //wrong button
 function wrongButton(){
   bombExploded = true
+  levelCounter = 0
   animateExplosion();
   clearExplosion()
-  container.innerHTML = ""
-  clearInterval(interval)
-  levelCounter = 0
-  ansArray = [] //clears our parsed number array
+  hideGame()
   showRestartButton() // reveals restart hidden restart button
 }
 
 //hide game info
 function hideGame(){
-
+  bombContainer.innerHTML = ""
   gameContainer.classList.add('hidden')
   clipboardContainer.classList.add('hidden')
   timerDiv.classList.add('hidden')
+  ansArray = [] //clears our parsed number array
+  clearInterval(interval)
 }
 
 //show game stuff
@@ -222,18 +239,14 @@ function startTimer() {
     if(s==59){m=m-1}
     timer.innerHTML = m + ":" + s;
     if (s === "00"){
-      timer.innerHTML = ""
       bombExploded = true
+      levelCounter = 0
       animateExplosion();
       clearExplosion()
-      container.innerHTML = ""
-      levelCounter = 0
-      ansArray = []
-      clearInterval(interval)
+      hideGame()
       showRestartButton() //reveals restart button
     }
   }
-
    interval = setInterval(timerStuff, 1000);
 }
 
@@ -242,6 +255,20 @@ function checkSecond(sec) {
   if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
   if (sec < 0) {sec = "59"};
   return sec;
+}
+
+//press signup button
+function pressedSignup(){
+  signInDiv.innerHTML = introForm() //shows signup form
+  onSignUpSubmit()//signup listener
+  introButtons.classList.add('hidden')
+}
+
+//press login button
+function pressedLogin(){
+  loginDiv.innerHTML = loginForm() //shows login form
+  onLoginSubmit()//login listener
+  introButtons.classList.add('hidden')
 }
 
 //create username form
@@ -280,6 +307,14 @@ function introForm(){
            <div>
      `
     }
+function checkUser(json){
+
+}
+
+//keeping user id
+function addUserId(json){
+  userId += json.id
+}
 
 // submit stuff
   function onSignUpSubmit(){
@@ -297,12 +332,28 @@ function introForm(){
         headers: {
           "content-type": "application/json"
         }
-      }).then(res => res.json()).then()
+      }).then(res => res.json()).then(console.log)
+
     })
+    // if (userId !== 0){
+    //
+    // }
   }
 
 // login stuff
 function onLoginSubmit(){
   const loginSubmit = document.getElementById('loginsubmit')
   const loginName = document.getElementById('gamertag')
+  loginSubmit.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    fetch('http://localhost:3000/api/v1/users', {
+    }).then(res => res.json()).then(checkUser)
+
+
+  })
+  if (userId !== 0) {
+    startButton.classList.remove('hidden')
+  }
+
 }

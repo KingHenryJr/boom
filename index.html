@@ -8,12 +8,17 @@
   <body onload="intro()">
 
 <button class="hidden" id="startButton"> Start!</button>
-
 <button class="hidden" id="hiddenButton"> Continue</button>
 
-<div id="signInDiv"></div>
-<div id="loginDiv"></div>
+<div id="introButtons">
+  <button id="pressLogin">Login!</button>
+  <button id="pressSignup">Signup!</button>
+</div>
 
+<div id="introFormDiv">
+  <div id="signInDiv"></div>
+  <div id="loginDiv"></div>
+</div>
 
 <div id="game-container">
   <aside id="clipboardContainer">
@@ -22,7 +27,9 @@
       <p id="instructions"></p>
     </div>
   </aside>
+
     <div id="timerDiv">Time left = <span id="timer"></span></div>
+
     <div id='bombContainer'></div>
 </div>
 

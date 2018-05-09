@@ -13,7 +13,17 @@ body {
   width: 960px;
 }
 
+.hidden{
+  display: none; //will hide
+}
 
+#hiddenButton {
+  margin-bottom: 68px;
+}
+
+#startButton{
+
+}
 
 aside {
   position: relative;
@@ -35,15 +45,17 @@ aside {
 aside:after {
   content:'';
   position:absolute;
-  left: -226px;
-  top: -114px;
-  width: 231%;
+  left: 17px;
+  top: -54px;
+  width: 90%;
   height: 0%;
-  background-image: url('../img/clipboard.svgz');
-  background-size:cover;
+  background-image: url('../img/clipboard2.png');
+  background-size: contain;
   padding-bottom: 15em;
+  background-repeat: no-repeat;
   /* z-index: -1; */
 }
+
 
 
 

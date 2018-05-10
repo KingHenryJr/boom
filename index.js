@@ -18,7 +18,7 @@ const body = document.getElementById('body')
 const explosionSound = document.getElementById("explosionSound")
 const backgroundSound = document.getElementById("backgroundSound")
 const countdownSound = document.getElementById("countdownSound")
-
+const keypad = document.getElementById("keypad")
 let interval //empty interval
 
 //solutions
@@ -185,10 +185,11 @@ function generateButtons(solution){
     let buttonCount = i + 1
       newButton.innerHTML = `${buttonCount}`; //button number
       newButton.id = `Button${buttonCount}`; //giving button id
+      newButton.setAttribute("class", "buttonClass")
       bombButtonDiv.appendChild(newButton); //append buttons to bomb div
   })
 
-  bombContainer.appendChild(bombButtonDiv) //appending div with buttons to our empty container
+  keypad.appendChild(bombButtonDiv) //appending div with buttons to our empty container
   bombButtonDiv.addEventListener('click', function(event){ //adding event listeners to our buttons div
     if(event.target.tagName === 'BUTTON') {
 
@@ -220,7 +221,7 @@ function winner(){
 
   clearInterval(interval)
   ansArray = []
-  bombContainer.innerHTML = "" //empty container of all divs (buttons + event listeners)
+  keypad.innerHTML = "" //empty container of all divs (buttons + event listeners)
   playerWin = true
   levelCounter += 1
   levelProgression() // progression logic
@@ -243,7 +244,7 @@ function wrongButton(){
 
 //hide game info
 function hideGame(){
-  bombContainer.innerHTML = ""
+  keypad.innerHTML = ""
   gameContainer.classList.add('hidden')
   clipboardContainer.classList.add('hidden')
   timerDiv.classList.add('hidden')
@@ -298,17 +299,17 @@ function startTimer() {
     var s = checkSecond((timeArray[1] - 1));
     if(s==59){m=m-1}
     timer.innerHTML = m + ":" + s;
-    if (s === "00"){
-      bombExploded = true
-      levelCounter = 0
-      backgroundSound.pause();
-      backgroundSound.currentTime = 0
-      animateExplosion();
-      explosionSound.play()
-      clearExplosion()
-      hideGame()
-      showRestartButton() //reveals restart button
-    }
+    // if (s === "00"){
+    //   bombExploded = true
+    //   levelCounter = 0
+    //   backgroundSound.pause();
+    //   backgroundSound.currentTime = 0
+    //   animateExplosion();
+    //   explosionSound.play()
+    //   clearExplosion()
+    //   hideGame()
+    //   showRestartButton() //reveals restart button
+    // }
   }
    interval = setInterval(timerStuff, 1000);
 }

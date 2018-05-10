@@ -11,10 +11,9 @@
 <input class="hidden "type="image" src="img/play.png" id="startButton"/><br>
 <input class="hidden "type="image" src="img/playagain.png" id="hiddenButton"/><br>
 
-<button class="hidden" id="hiddenButton"> Play Again!</button>
-
-
-
+<audio src="img/explosion.mp3" id="explosionSound"></audio>
+<audio src="img/background.mp3" id="backgroundSound"></audio>
+<audio src="img/countdown.mp3" id="countdownSound"></audio>
 
 <div id="introButtons">
   <input type="image" src="img/login.png" id="pressLogin"/><br>
@@ -27,8 +26,6 @@
   <div id="loginDiv"></div>
 </div>
 
-
-
 <div id="game-container">
   <aside id="clipboardContainer">
     <div id="instructionsContainer">
@@ -37,7 +34,7 @@
     </div>
   </aside>
 
-    <div id="timerDiv">Time left = <span id="timer"></span></div>
+    <div id="timerDiv"><span id="timer"></span></div>
 
     <div id='bombContainer'></div>
 </div>

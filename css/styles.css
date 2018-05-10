@@ -3,6 +3,21 @@ body {
   width: 1100px;
   margin:auto;
 }
+#introButtons {
+  position: center;
+}
+
+#pressLogin {
+  position: center;
+}
+
+#login {
+  color: white;
+}
+
+#pressSignup{
+  position: center;
+}
 
 #bombContainer {
   margin-left:5em;

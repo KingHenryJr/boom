@@ -14,8 +14,7 @@ const pressSignUp = document.getElementById('pressSignup')
 const pressLogin = document.getElementById('pressLogin')
 const introButtons = document.getElementById('introButtons')
 const introFormDiv = document.getElementById('introFormDiv')
-
-
+const body = document.getElementById('body')
 let interval //empty interval
 
 //solutions
@@ -36,6 +35,9 @@ let userName = []
 //intro page
 function intro(){ //on page load create login page
   hideGame() //hides game assets
+  body.style.background = ""
+  body.style.background = "url('img/introBG.jpg') #181743 no-repeat fixed center"
+
   pressSignup.addEventListener('click', pressedSignup) //press sign up button
   pressLogin.addEventListener('click', pressedLogin) //press log in button
   startButton.addEventListener('click', startGame) //when revealed starts game
@@ -43,7 +45,12 @@ function intro(){ //on page load create login page
 
 //starts gameplay
 function startGame(){
-  console.log(userId)
+  body.style.background = ""
+  console.log(body.style.background)
+  console.log('hello');
+  body.style.background = "url('img/space.gif') no-repeat fixed center"
+  body.style.backgroundSize = "cover"
+
   introButtons.classList.add('hidden') //hides intro buttons
   introFormDiv.classList.add('hidden') //hides intro forms
 
@@ -57,6 +64,8 @@ function startGame(){
 
   levelOne(levelOneSolution) //runs level 1
 }
+
+//-------------------- LEVELS / add levels here
 
 //level 1
 function levelOne(solution){
@@ -98,9 +107,8 @@ function levelFive(solution){
   instructions.innerText = "Press the Second Button. Then the Fourth. Then the First. Then the Third."
 }
 
-//progresses levels if playerWin is true and the counter has been incremented
+//progresses levels if playerWin is true and the counter has been incremented + add Progression here
 function levelProgression(){
-
   if (playerWin === true && levelCounter === 1) {
     levelTwo(levelTwoSolution)
   } else if (playerWin === true && levelCounter === 2) {
@@ -117,12 +125,8 @@ function levelProgression(){
 //logic!!!
 function levelLogic(solution){
   playerWin = false
-  //create bomb
   generateButtons(solution) // execute generate buttons + sets off the chain
 }
-//generate bomb
-
-
 
 //declare generate buttons
 function generateButtons(solution){
@@ -165,6 +169,9 @@ function handleCombinationAttempt(buttonNumber, solution){ //inputs button numbe
 //win actions
 function winner(){
   alert("YAYYYY") //CHANGE TO WIN SCREEN!!!!!!
+
+
+
   clearInterval(interval)
   ansArray = []
   bombContainer.innerHTML = "" //empty container of all divs (buttons + event listeners)
@@ -182,6 +189,8 @@ function wrongButton(){
   hideGame()
   showRestartButton() // reveals restart hidden restart button
 }
+
+//-------------------- Hide or Reveal Game Logic
 
 //hide game info
 function hideGame(){
@@ -206,6 +215,8 @@ function showRestartButton(){
   buttonRestart.addEventListener('click', startGame)
 }
 
+//-------------------- Explosions
+
 // animateExplosion
 function animateExplosion(){
   let explodeDiv = document.createElement('div'),
@@ -226,6 +237,8 @@ function clearExplosion(){
     })
   }
 }
+
+//-------------------- Timer
 
 //timer
 function startTimer() {
@@ -255,6 +268,8 @@ function checkSecond(sec) {
   return sec;
 }
 
+//-------------------- Signup + Login
+
 //press signup button
 function pressedSignup(){
   signInDiv.innerHTML = introForm() //shows signup form
@@ -273,39 +288,47 @@ function pressedLogin(){
 function introForm(){
     return `
        <div id="newUserName">
-       Create A Username!
        <br>
          <form>
          <br>
-         Username:<br>
-         <br>
+         <img src="img/username.png" width="160" height="40"><br><br>
+
          <input type="text" id="createName"><br>
          <br>
-        <input type="submit" id="createsubmit">
+         <input type="image" name="submit" src="img/create.png" id="createsubmit" width="100" height="35">
         <br>
         </form>
          <div>
    `
   }
 
-//login Form
-  function loginForm(){
+// login Form
+function loginForm(){
       return `
          <div id="login">
-         Login
          <br>
            <form>
            <br>
-           Username:<br>
+           <img src="img/username.png" width="160" height="40"><br>
            <br>
            <input type="text" id="gamertag"><br>
            <br>
-          <input type="submit" id="loginsubmit">
+          <input type="image" name="submit" src="img/login.png" id="loginsubmit" width="100" height="35">
           </form>
            <div>
      `
     }
-//check to see if user is in database - if so reveal start button
+
+// keeping user id
+function addUserId(json){
+  userId = json["id"]
+  userName = json["name"]
+  startButton.classList.remove('hidden')
+  console.log(userName)
+  signInDiv.classList.add('hidden')
+}
+
+// check to see if user is in database - if so reveal start button
 function checkUser(json){
 
   const loginName = document.getElementById('gamertag')
@@ -320,17 +343,8 @@ function checkUser(json){
 
 }
 
-//keeping user id
-function addUserId(json){
-  userId = json["id"]
-  userName = json["name"]
-  startButton.classList.remove('hidden')
-  console.log(userName)
-  signInDiv.classList.add('hidden')
-}
-
 // submit stuff
-  function onSignUpSubmit(){
+function onSignUpSubmit(){
     const createSubmit = document.querySelector('form')
     const createName = document.getElementById('createName')
     createSubmit.addEventListener("submit", (e) => {

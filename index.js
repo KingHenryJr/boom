@@ -15,6 +15,10 @@ const pressLogin = document.getElementById('pressLogin')
 const introButtons = document.getElementById('introButtons')
 const introFormDiv = document.getElementById('introFormDiv')
 const body = document.getElementById('body')
+const explosionSound = document.getElementById("explosionSound")
+const backgroundSound = document.getElementById("backgroundSound")
+const countdownSound = document.getElementById("countdownSound")
+
 let interval //empty interval
 
 //solutions
@@ -22,8 +26,11 @@ const levelOneSolution = [1,3,2]
 const levelTwoSolution = [2,3,1]
 const levelThreeSolution = [4,1,2,2]
 const levelFourSolution = [3,1,2,3]
-const levelFiveSolution = [2,4,1,3]
-
+const levelFiveSolution = [4,3,2,1]
+const levelSixSolution = [2,4,3,5,2]
+const levelSevenSolution = [3,4,3,5,2]
+const levelEightSolution = [6,3,2,4,1,2]
+const levelNineSolution = [4,3,3,5,4,6,2]
 //default settings
 let ansArray = []
 let levelCounter = 0
@@ -37,7 +44,6 @@ function intro(){ //on page load create login page
   hideGame() //hides game assets
   body.style.background = ""
   body.style.background = "url('img/introBG.jpg') #181743 no-repeat fixed center"
-
   pressSignup.addEventListener('click', pressedSignup) //press sign up button
   pressLogin.addEventListener('click', pressedLogin) //press log in button
   startButton.addEventListener('click', startGame) //when revealed starts game
@@ -45,9 +51,7 @@ function intro(){ //on page load create login page
 
 //starts gameplay
 function startGame(){
-  body.style.background = ""
-  console.log(body.style.background)
-  console.log('hello');
+  backgroundSound.play()
   body.style.background = "url('img/space.gif') no-repeat fixed center"
   body.style.backgroundSize = "cover"
 
@@ -69,7 +73,7 @@ function startGame(){
 
 //level 1
 function levelOne(solution){
-  timer.innerHTML = 00 + ":" + 5;
+  timer.innerHTML = 00 + ":" + 6;
   startTimer();
   levelLogic(solution)
   instructions.innerText = "Press the First Button. Then the Third Button. Then the Second."
@@ -77,7 +81,7 @@ function levelOne(solution){
 
 //level 2
 function levelTwo(solution){
-  timer.innerHTML = 00 + ":" + 10;
+  timer.innerHTML = 00 + ":" + 6;
   startTimer();
   levelLogic(solution)
   instructions.innerText = "Press the Second Button. Then the Third Button. Then the First Button."
@@ -85,7 +89,7 @@ function levelTwo(solution){
 
 //level 3
 function levelThree(solution){
-  timer.innerHTML = 00 + ":" + 15;
+  timer.innerHTML = 00 + ":" + 10;
   startTimer();
   levelLogic(solution)
   instructions.innerText = "Press the Fourth Button. Then the First Button. Then the Second. Then the Second."
@@ -93,7 +97,7 @@ function levelThree(solution){
 
 //level 4
 function levelFour(solution){
-  timer.innerHTML = 00 + ":" + 15;
+  timer.innerHTML = 00 + ":" + 10;
   startTimer();
   levelLogic(solution)
   instructions.innerText = "Press the Third Button. Do not press the Fourth Button. Then the First. Then the Second. Then the Third."
@@ -101,10 +105,44 @@ function levelFour(solution){
 
 //level 5
 function levelFive(solution){
-  timer.innerHTML = 00 + ":" + 35;
+  timer.innerHTML = 00 + ":" + 15;
   startTimer();
   levelLogic(solution)
-  instructions.innerText = "Press the Second Button. Then the Fourth. Then the First. Then the Third."
+  instructions.innerText = "Press the buttons right to left"
+}
+
+//level 6 + background change
+function levelSix(solution){
+  timer.innerHTML = 00 + ":" + 15;
+  startTimer();
+  body.style.background = "url('img/space2.gif') no-repeat fixed center"
+  body.style.backgroundSize = "cover"
+  levelLogic(solution)
+  instructions.innerText = "Press the Second Button. Then the Fourth. Then the Third. Then the Fifth. Press the button to the left of the Third."
+}
+
+// lvl7
+function levelSeven(solution){
+  timer.innerHTML = 00 + ":" + 15;
+  startTimer();
+  levelLogic(solution)
+  instructions.innerText = "Press the Third Button. Then the button number of Eight subtracted by Four. Then the Third. Then the Fifth. Then the second from the Left."
+}
+
+// lvl 8
+function levelEight(solution){
+  timer.innerHTML = 00 + ":" + 18;
+  startTimer();
+  levelLogic(solution)
+  instructions.innerText = "Press the Sixth Button. Then the Third. Dont press the Fifth button. Then the Second from the Left. Then Third from the Right. Then the First. Press the Fifth button. Then the Second."
+}
+
+// lvl 9
+function levelNine(solution){
+  timer.innerHTML = 00 + ":" + 20;
+  startTimer();
+  levelLogic(solution)
+  instructions.innerText = "Press the Fourth Button. Then the Third from the left. Then the second button pressed. Then the fifth. Then the first button pressed. Dont press the third. Then the sixth. Then press the button on the left of the one we can't press."
 }
 
 //progresses levels if playerWin is true and the counter has been incremented + add Progression here
@@ -118,7 +156,17 @@ function levelProgression(){
   } else if (playerWin === true && levelCounter === 4) {
     levelFive(levelFiveSolution)
   } else if (playerWin === true && levelCounter === 5) {
-    alert("you made it!!!!")
+    levelSix(levelSixSolution)
+  } else if (playerWin === true && levelCounter === 6) {
+    levelSeven(levelSevenSolution)
+  } else if (playerWin === true && levelCounter === 7) {
+    levelEight(levelEightSolution)
+  } else if (playerWin === true && levelCounter === 8) {
+    levelNine(levelNineSolution)
+  } else if (playerWin === true && levelCounter === 9) {
+    levelTen(levelTenSolution)
+  } else if (playerWin === true && levelCounter === 10) {
+    alert("YOU DID IT!!!")
   }
 }
 
@@ -170,8 +218,6 @@ function handleCombinationAttempt(buttonNumber, solution){ //inputs button numbe
 function winner(){
   alert("YAYYYY") //CHANGE TO WIN SCREEN!!!!!!
 
-
-
   clearInterval(interval)
   ansArray = []
   bombContainer.innerHTML = "" //empty container of all divs (buttons + event listeners)
@@ -184,7 +230,10 @@ function winner(){
 function wrongButton(){
   bombExploded = true
   levelCounter = 0
+  backgroundSound.pause();
+  backgroundSound.currentTime = 0
   animateExplosion();
+  explosionSound.play()
   clearExplosion()
   hideGame()
   showRestartButton() // reveals restart hidden restart button
@@ -232,7 +281,7 @@ function animateExplosion(){
 function clearExplosion(){
   let explodeContainer = $('#explosion');
     if (explodeContainer && bombExploded === true) {
-      explodeContainer.delay(2000).fadeOut(1000, function(){
+      explodeContainer.delay(1500).fadeOut(500, function(){
         explodeContainer.remove();
     })
   }
@@ -252,7 +301,10 @@ function startTimer() {
     if (s === "00"){
       bombExploded = true
       levelCounter = 0
+      backgroundSound.pause();
+      backgroundSound.currentTime = 0
       animateExplosion();
+      explosionSound.play()
       clearExplosion()
       hideGame()
       showRestartButton() //reveals restart button
@@ -324,7 +376,6 @@ function addUserId(json){
   userId = json["id"]
   userName = json["name"]
   startButton.classList.remove('hidden')
-  console.log(userName)
   signInDiv.classList.add('hidden')
 }
 
@@ -339,7 +390,6 @@ function checkUser(json){
     startButton.classList.remove('hidden')
     loginDiv.classList.add('hidden')
   }
-
 
 }
 

@@ -42,6 +42,7 @@ let userName = []
 //intro page
 function intro(){ //on page load create login page
   hideGame() //hides game assets
+  clipboardContainer.classList.add('hidden')
   body.style.background = ""
   body.style.background = "url('img/introBG.jpg') #181743 no-repeat fixed center"
   pressSignup.addEventListener('click', pressedSignup) //press sign up button
@@ -76,7 +77,7 @@ function levelOne(solution){
   timer.innerHTML = 00 + ":" + 6;
   startTimer();
   levelLogic(solution)
-  instructions.innerText = "Press the First Button. Then the Third Button. Then the Second."
+  instructions.innerText = "Press the First Button. Then the Third Button. Then the Second Button."
 }
 
 //level 2
@@ -100,7 +101,7 @@ function levelFour(solution){
   timer.innerHTML = 00 + ":" + 10;
   startTimer();
   levelLogic(solution)
-  instructions.innerText = "Press the Third Button. Do not press the Fourth Button. Then the First. Then the Second. Then the Third."
+  instructions.innerText = "Press the Third Button. Never press the Fourth Button. Then the First. Then the Second. Then the Fourth. Then the Third."
 }
 
 //level 5
@@ -108,7 +109,7 @@ function levelFive(solution){
   timer.innerHTML = 00 + ":" + 15;
   startTimer();
   levelLogic(solution)
-  instructions.innerText = "Press the buttons right to left"
+  instructions.innerText = "Press the buttons right to left. Bottom to top."
 }
 
 //level 6 + background change
@@ -116,9 +117,9 @@ function levelSix(solution){
   timer.innerHTML = 00 + ":" + 15;
   startTimer();
   body.style.background = "url('img/space2.gif') no-repeat fixed center"
-  body.style.backgroundSize = "cover"
+  body.style.backgroundSize = "cover"//background change to red
   levelLogic(solution)
-  instructions.innerText = "Press the Second Button. Then the Fourth. Then the Third. Then the Fifth. Press the button to the left of the Third."
+  instructions.innerText = "Press the Second Button. Press the button two to the right of the previous Button. Then the button to the Left. Then the Fifth. Press the button to the left of the Third."
 }
 
 // lvl7
@@ -134,7 +135,7 @@ function levelEight(solution){
   timer.innerHTML = 00 + ":" + 18;
   startTimer();
   levelLogic(solution)
-  instructions.innerText = "Press the Sixth Button. Then the Third. Dont press the Fifth button. Then the Second from the Left. Then Third from the Right. Then the First. Press the Fifth button. Then the Second."
+  instructions.innerText = "Press the Sixth Button. Then the Third. Never press Fifth button. Then the Second from the Left. Then Third from the Right. Then the First. Then the Fifth button. Then the Second."
 }
 
 // lvl 9
@@ -142,7 +143,17 @@ function levelNine(solution){
   timer.innerHTML = 00 + ":" + 20;
   startTimer();
   levelLogic(solution)
-  instructions.innerText = "Press the Fourth Button. Then the Third from the left. Then the second button pressed. Then the fifth. Then the first button pressed. Dont press the third. Then the sixth. Then press the button on the left of the one we can't press."
+  instructions.innerText = "Press the Fourth Button. Then the Third from the Left. Then the Second button pressed. Then the Fifth. Then the First button pressed. Dont press the Third. Then the Sixth. Then the Third. Then the Second."
+}
+
+function victory(){
+  alert("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+  backgroundSound.pause();
+  backgroundSound.currentTime = 0
+  instructionsHeader.innerText = "YOU WIN!"
+  instructions.innerText = "HOOORAY!"
+  hideGame()
+  showRestartButton()
 }
 
 //progresses levels if playerWin is true and the counter has been incremented + add Progression here
@@ -164,9 +175,7 @@ function levelProgression(){
   } else if (playerWin === true && levelCounter === 8) {
     levelNine(levelNineSolution)
   } else if (playerWin === true && levelCounter === 9) {
-    levelTen(levelTenSolution)
-  } else if (playerWin === true && levelCounter === 10) {
-    alert("YOU DID IT!!!")
+    victory()
   }
 }
 
@@ -246,7 +255,7 @@ function wrongButton(){
 function hideGame(){
   keypad.innerHTML = ""
   gameContainer.classList.add('hidden')
-  clipboardContainer.classList.add('hidden')
+  // clipboardContainer.classList.add('hidden')
   timerDiv.classList.add('hidden')
   ansArray = [] //clears our parsed number array
   clearInterval(interval)

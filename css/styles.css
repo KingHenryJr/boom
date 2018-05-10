@@ -5,8 +5,18 @@ body {
   overflow:hidden;
 }
 
+#instructionsHeader{
+  font-family: "Monaco";
+  position: relative;
+  top: -3px;
+  left: -4px;
+}
+
 #instructions {
   font-family: "Monaco", "Consolas";
+  position: relative;
+  top: -7px;
+  left: -26px;
 }
 
 #keypad{
@@ -15,12 +25,13 @@ body {
   top: -184px;
   width: 100px;
   overflow: hidden;
+  color: white;
 }
 
 #timerDiv{
   /* position: relative; */
   color: white;
-  font-size: 50px;
+  font-size: 40px;
   position: relative;
   font-family: "Georgia"
   padding: 30px;
@@ -37,7 +48,7 @@ body {
   margin-bottom: 7px;
   float: left;
   background-size: cover;
-
+  color: white;
 }
 
 #timerDiv img {
@@ -48,9 +59,10 @@ width:500px;
 
 #timer {
   position: absolute;
-  top: 170px;
-  left: 193px;
-  color: #000;
+  top: 177px;
+  left: 203px;
+  color: #191642;
+  font-family: "Monaco"
 }
 
 #introButtons {

@@ -245,6 +245,7 @@ function wrongButton(){
   animateExplosion();
   explosionSound.play()
   clearExplosion()
+  clipboardContainer.classList.add('hidden')
   hideGame()
   showRestartButton() // reveals restart hidden restart button
 }
@@ -308,17 +309,18 @@ function startTimer() {
     var s = checkSecond((timeArray[1] - 1));
     if(s==59){m=m-1}
     timer.innerHTML = m + ":" + s;
-    // if (s === "00"){
-    //   bombExploded = true
-    //   levelCounter = 0
-    //   backgroundSound.pause();
-    //   backgroundSound.currentTime = 0
-    //   animateExplosion();
-    //   explosionSound.play()
-    //   clearExplosion()
-    //   hideGame()
-    //   showRestartButton() //reveals restart button
-    // }
+    if (s === "00"){
+      bombExploded = true
+      levelCounter = 0
+      backgroundSound.pause();
+      backgroundSound.currentTime = 0
+      explosionSound.play()
+      animateExplosion();
+      clearExplosion()
+      clipboardContainer.classList.add('hidden')
+      hideGame()
+      showRestartButton() //reveals restart button
+    }
   }
    interval = setInterval(timerStuff, 1000);
 }

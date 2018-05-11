@@ -150,6 +150,9 @@ function victory(){
   alert("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥")
   backgroundSound.pause();
   backgroundSound.currentTime = 0
+  gameContainer.setAttribute("style", "width: 480px top: -96px left: 39px")
+
+
   instructionsHeader.innerText = "YOU WIN!"
   instructions.innerText = "HOOORAY!"
   hideGame()
